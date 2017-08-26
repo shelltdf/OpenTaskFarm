@@ -1,0 +1,14 @@
+SET(OTF_SETUP_TARGET_NAME fakeTextProcessing)
+
+SET(OTF_SETUP_HEADERS
+)
+
+SET(OTF_SETUP_SOURCES
+    fakeTextProcessing.cpp
+)
+
+OTF_SETUP_EXECUTABLE()
+
+
+
+

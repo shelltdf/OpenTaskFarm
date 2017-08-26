@@ -1,0 +1,18 @@
+{
+	"setting": {
+		"taskid": "faketextprocessing",
+		"workdir": "faketextprocessing"
+	},
+	"downloads": [{
+		"source": "curl\\curl.exe ftp://127.0.0.1/faketextprocessing.exe -u will:123 -o faketextprocessing\\faketextprocessing.exe"
+	},
+	{
+		"source": "curl\\curl.exe ftp://127.0.0.1/namelist.txt -u will:123 -o faketextprocessing\\namelist.txt"
+	}],
+	"processes": [{
+		"source": "faketextprocessing.exe -i faketextprocessing\\namelist.txt -o faketextprocessing\\outname.txt"
+	}],
+	"uploads": [{
+		"source": "curl\\curl.exe -u will:123 -t faketextprocessing\\outname.txt ftp://127.0.0.1/result/"
+	}]
+}

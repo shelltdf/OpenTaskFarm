@@ -1,0 +1,97 @@
+
+PROJECT(OpenTaskFarm)
+SET(PROJECT_NAME OpenTaskFarm)
+
+cmake_minimum_required(VERSION 3.6)
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules/")
+include(otfMacroUtils)
+
+# FIND_PACKAGE(Doxygen)
+
+
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
+
+
+#SET(OUTPUT_BINDIR ${PROJECT_BINARY_DIR}/bin/${CMAKE_SYSTEM_NAME})
+SET(OUTPUT_BINDIR ${PROJECT_BINARY_DIR}/bin)
+MAKE_DIRECTORY(${OUTPUT_BINDIR})
+IF(MSVC AND NOT MSVC_IDE)
+    MAKE_DIRECTORY(${OUTPUT_BINDIR}/${OSG_PLUGINS})
+ENDIF(MSVC AND NOT MSVC_IDE)
+
+#SET(OUTPUT_LIBDIR ${PROJECT_BINARY_DIR}/lib/${CMAKE_SYSTEM_NAME})
+SET(OUTPUT_LIBDIR ${PROJECT_BINARY_DIR}/lib)
+MAKE_DIRECTORY(${OUTPUT_LIBDIR})
+IF(NOT MSVC OR MSVC_IDE)
+    MAKE_DIRECTORY(${OUTPUT_LIBDIR}/${OSG_PLUGINS})
+ENDIF(NOT MSVC OR MSVC_IDE)
+
+
+IF(CMAKE_MAJOR_VERSION EQUAL 2 AND CMAKE_MINOR_VERSION LESS 5)
+    SET(EXECUTABLE_OUTPUT_PATH ${OUTPUT_BINDIR})
+    SET(LIBRARY_OUTPUT_PATH    ${OUTPUT_LIBDIR})
+ELSE()
+    # If CMake >= 2.6.0
+    SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_LIBDIR})
+    SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_BINDIR})
+    IF(WIN32)
+        SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_BINDIR})
+    ELSE(WIN32)
+        SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_LIBDIR})
+    ENDIF(WIN32)
+ENDIF()
+
+
+# set postfix
+SET(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add a postfix, usually d on windows")
+SET(CMAKE_RELEASE_POSTFIX "" CACHE STRING "add a postfix, usually empty on windows")
+SET(CMAKE_RELWITHDEBINFO_POSTFIX "rd" CACHE STRING "add a postfix, usually empty on windows")
+SET(CMAKE_MINSIZEREL_POSTFIX "s" CACHE STRING "add a postfix, usually empty on windows")
+
+INCLUDE_DIRECTORIES(include ${CMAKE_INCLUDE_PATH})
+LINK_DIRECTORIES(${CMAKE_LIBRARY_PATH})
+
+
+#option
+OPTION(BUILD_TESTS "build test programs" OFF)
+OPTION(BUILD_STATIC_LIBRAY "build static library" ON)
+
+# Draco requires C++11 support.
+# include("compiler_flags")
+# require_cxx_flag_nomsvc("-std=c++11")
+
+#surport c++11
+if(CMAKE_COMPILER_IS_GNUCXX)
+    add_definitions( -std=c++11 )
+endif()
+
+
+
+SET( JSONCPP_INCLUDE_DIR 
+    ${PROJECT_SOURCE_DIR}/3rdparty/jsoncpp/include
+)
+INCLUDE_DIRECTORIES(AFTER ${JSONCPP_INCLUDE_DIR})
+SET( JSONCPP_SOURCE_FILES 
+    ${PROJECT_SOURCE_DIR}/3rdparty/jsoncpp/src/lib_json/json_reader.cpp 
+    ${PROJECT_SOURCE_DIR}/3rdparty/jsoncpp/src/lib_json/json_value.cpp 
+    ${PROJECT_SOURCE_DIR}/3rdparty/jsoncpp/src/lib_json/json_writer.cpp 
+)
+SOURCE_GROUP(
+    "_JsonCPP"
+    FILES ${JSONCPP_SOURCE_FILES}
+)
+
+SET( MONGOOSE_SOURCE_FILES 
+	${PROJECT_SOURCE_DIR}/3rdparty/mongoose/mongoose.h
+    ${PROJECT_SOURCE_DIR}/3rdparty/mongoose/mongoose.c
+    )
+SOURCE_GROUP(
+    "_mongoose"
+    FILES ${MONGOOSE_SOURCE_FILES}
+)
+
+
+ADD_SUBDIRECTORY(src)
+# ADD_SUBDIRECTORY(examples)
+
+

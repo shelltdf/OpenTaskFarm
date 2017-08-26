@@ -1,0 +1,18 @@
+
+ADD_SUBDIRECTORY(libotf)
+
+ADD_SUBDIRECTORY(otf)
+ADD_SUBDIRECTORY(otfMaster)
+ADD_SUBDIRECTORY(otfNode)
+ADD_SUBDIRECTORY(otfSimpleMaster)
+ADD_SUBDIRECTORY(runTask)
+
+ADD_SUBDIRECTORY(fakeTextProcessing)
+
+if(BUILD_TESTS)
+
+    ADD_SUBDIRECTORY(testWSServer)
+    ADD_SUBDIRECTORY(testWSClient)
+    ADD_SUBDIRECTORY(testSubprocess)
+    
+endif(BUILD_TESTS)
