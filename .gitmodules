@@ -1,0 +1,6 @@
+[submodule "3rdparty/mongoose"]
+	path = 3rdparty/mongoose
+	url = https://github.com/cesanta/mongoose.git
+[submodule "3rdparty/jsoncpp"]
+	path = 3rdparty/jsoncpp
+	url = https://github.com/open-source-parsers/jsoncpp.git
